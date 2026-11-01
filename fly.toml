@@ -1,34 +1,36 @@
-# fly.toml — إعداد النشر على Fly.io
-# مهم: غيّر "app" إلى اسم فريد عالميًا (أو أنشئ التطبيق بالاسم الذي تريده عبر fly apps create
-# وحدّث هذا السطر ليطابقه)، ثم: fly deploy
-app = "academic-ppt-ai"
-primary_region = "cdg" # باريس — الأقرب للجزائر
+# fly.toml app configuration file generated for njnjh on 2026-11-01T22:44:29Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'njnjh'
+primary_region = 'cdg'
 
 [build]
-  dockerfile = "Dockerfile"
+  dockerfile = 'Dockerfile'
 
 [http_service]
-  internal_port = 8000 # نفس منفذ gunicorn داخل الحاوية
+  internal_port = 8000
   force_https = true
-  auto_stop_machines = "stop"
+  auto_stop_machines = 'stop'
   auto_start_machines = true
   min_machines_running = 0
-  processes = ["app"]
+  processes = ['app']
 
   [http_service.concurrency]
-    type = "requests"
-    soft_limit = 20
+    type = 'requests'
     hard_limit = 40
+    soft_limit = 20
 
-# فحص صحة يستخدم /health الموجود في app.py
-[[http_service.checks]]
-  interval = "30s"
-  timeout = "5s"
-  grace_period = "30s"
-  method = "GET"
-  path = "/health"
+  [[http_service.checks]]
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '30s'
+    method = 'GET'
+    path = '/health'
 
 [[vm]]
-  cpu_kind = "shared"
+  memory = '512mb'
+  cpu_kind = 'shared'
   cpus = 1
-  memory = "512mb"
+  memory_mb = 512
