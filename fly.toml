@@ -1,6 +1,6 @@
-# fly.toml app configuration file generated for njnjh on 2026-11-01T22:44:29Z
+# fly.toml app configuration file generated for njnjh on 2026-11-02T11:43:13Z
 #
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+# See https://docs.fly.io/reference/configuration for information about how to use this file.
 #
 
 app = 'njnjh'
@@ -12,22 +12,12 @@ primary_region = 'cdg'
 [http_service]
   internal_port = 8001
   force_https = true
-  auto_stop_machines = 'stop'
+  auto_stop_machines = 'off'
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1
   processes = ['app']
-
-  [http_service.concurrency]
-    type = 'requests'
-    hard_limit = 40
-    soft_limit = 20
-
-  [[http_service.checks]]
-    interval = '30s'
-    timeout = '5s'
-    grace_period = '30s'
-    method = 'GET'
-    path = '/health'
+  checks = [{ grace_period = '30s', interval = '30s', method = 'GET', path = '/health', timeout = '5s' }]
+  concurrency = { hard_limit = 40, soft_limit = 20, type = 'requests' }
 
 [[vm]]
   memory = '512mb'
